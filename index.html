@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f1f2ef">
+<meta name="robots" content="noindex">
+<title>Everyday V2 — Mon jardin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#f1f2ef;color:#161816;font:16px/1.6 Helvetica,Arial,sans-serif;display:grid;place-items:center;padding:24px}main{width:100%;max-width:560px}.brand{font-size:12px;letter-spacing:3px;margin-bottom:32px}h1{font:400 clamp(42px,9vw,64px)/1.05 'Instrument Serif',Georgia,serif;letter-spacing:-1px;margin:0 0 22px}p{color:#62695f;margin:14px 0}.actions{display:grid;gap:12px;margin:28px 0}a,button{font:inherit;text-align:center;text-decoration:none;border:1px solid #dfe3dc;border-radius:12px;padding:15px 18px;color:#161816;background:white;cursor:pointer}.primary{background:#c2ff38;border-color:#c2ff38}.small{font-size:12px}[hidden]{display:none!important}a:focus-visible,button:focus-visible{outline:2px solid #161816;outline-offset:4px}
+</style>
+</head>
+<body>
+<main>
+<div class="brand">EVERYDAY · V2</div>
+<h1>Un jour à la fois.<br>Un jardin qui grandit.</h1>
+<p id="message">Ton Daily System V2 conserve la même adresse synchronisée : journal, graphiques de préparation au padel et nouvel onglet « Mon jardin ». Utilise le même compte ChatGPT sur tes appareils.</p>
+<div class="actions">
+<button id="backup" hidden>Exporter mes anciennes données</button>
+<a id="open" class="primary" href="https://daily-system-martin-sync.sandylavender4.chatgpt.site/">Ouvrir mon Daily System V2 →</a>
+</div>
+<p id="instructions" class="small" hidden>Une ancienne sauvegarde locale est présente sur cette adresse GitHub. Exporte-la pour la conserver. Si ces données sont déjà dans ton journal synchronisé, tu n’as rien à importer. Sinon, utilise « Importer » dans le journal après avoir exporté sa sauvegarde actuelle.</p>
+<p class="small">Cette page GitHub ouvre le journal hébergé qui assure la connexion et la synchronisation. Elle ne stocke aucune nouvelle saisie.</p>
+<noscript><p>Utilise le bouton ci-dessus pour ouvrir ton journal.</p></noscript>
+</main>
+<script>
+'use strict';
+const destination=document.getElementById('open').href;
+let original=null,storageReadable=true;
+try{original=localStorage.getItem('everyday-journal-v1')}catch(e){storageReadable=false}
+if(original){
+ document.getElementById('backup').hidden=false;
+ document.getElementById('instructions').hidden=false;
+ document.getElementById('backup').onclick=()=>{
+  const url=URL.createObjectURL(new Blob([original],{type:'application/json'}));
+  const a=document.createElement('a');a.href=url;a.download='everyday-ancienne-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+ };
+}else if(storageReadable){location.replace(destination)}
+</script>
+</body>
+</html>
